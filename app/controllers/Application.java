@@ -11,4 +11,7 @@ public class Application extends Controller {
         return ok(authentication.render("Jeopardy!"));
     }
 
+    public static Result register() {
+        return ok(registration.render("Jeopardy!"));
+    }
 }
