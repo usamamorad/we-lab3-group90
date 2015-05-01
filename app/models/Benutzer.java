@@ -4,7 +4,7 @@ import at.ac.tuwien.big.we15.lab2.api.*;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import java.util.Date;
+import java.time.LocalDate;
 
 
 @Entity
@@ -17,9 +17,8 @@ public class Benutzer implements at.ac.tuwien.big.we15.lab2.api.User{
     private Avatar avatar;
     private String firstName;
     private String lastName;
-    private Date birthday;
-    private boolean man;
-    private boolean women;
+    private LocalDate birthday;
+    private String gender;  //"m" or "f"
 
     public Benutzer(){}
 
@@ -72,27 +71,19 @@ public class Benutzer implements at.ac.tuwien.big.we15.lab2.api.User{
         this.lastName = lastName;
     }
 
-    public Date getBirthday() {
+    public LocalDate getBirthday() {
         return birthday;
     }
 
-    public void setBirthday(Date birthday) {
+    public void setBirthday(LocalDate birthday) {
         this.birthday = birthday;
     }
 
-    public boolean isMan() {
-        return man;
+    public String getGender() {
+        return gender;
     }
 
-    public void setMan(boolean man) {
-        this.man = man;
-    }
-
-    public boolean isWomen() {
-        return women;
-    }
-
-    public void setWomen(boolean women) {
-        this.women = women;
+    public void setGender(String gender) {
+        this.gender = gender;
     }
 }

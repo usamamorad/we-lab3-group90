@@ -35,7 +35,8 @@
         <div id="register" role="main">
                 <!-- Register section -->
             <h2 id="registerheading" class="accessibility">Registrierung</h2>
-            <form action="login.xhtml" method="post">
+
+            @helper.form(action=routes.Registration.registerUser){
                 <fieldset>
                     <legend>Persönliche Daten</legend>
                     <label for="firstname">Vorname:</label>
@@ -116,152 +117,153 @@
                     <input class="greenlink formlink" type="submit" value="Registrieren" accesskey="s"/>
                     <p id="requiredhint">Mit "*" gekennzeichnete Felder sind Pflichtfelder</p>
                 </fieldset>
-            </form>
+            }
         </div>
 
             <!-- Footer -->
         <footer role="contentinfo">© 2015 BIG Jeopardy</footer>
 
-        <script type="text/javascript">
-        //<![CDATA[
 
-        $(document).ready(function() {
-        if (areAllFieldsValid()) {
-        $('input[type="submit"]').removeAttr('disabled');
-        }else{
-        $('input[type="submit"]').attr('disabled', 'disabled');
-        }
-        });
+        @*<script type="text/javascript">*@
+        @*//<![CDATA[*@
 
-        function areAllFieldsValid() {
-        var valid;
-        if(hasFormValidation()){
-        valid = $('form')[0].checkValidity();
-        }else{
-        valid = !(isUsernameInvalid($("#username").val()) || isPasswordInvalid($("#password").val()));
-        }
-        if(!hasNativeDateInput()){
-        valid = valid && !isBirthdayInvalid("birthdate");
-        }
-        return valid;
-        }
+        @*$(document).ready(function() {*@
+        @*if (areAllFieldsValid()) {*@
+        @*$('input[type="submit"]').removeAttr('disabled');*@
+        @*}else{*@
+        @*$('input[type="submit"]').attr('disabled', 'disabled');*@
+        @*}*@
+        @*});*@
 
-        function updateSubmitState() {
-        if (areAllFieldsValid()) {
-        $('input[type="submit"]').removeAttr('disabled');
-        }else{
-        $('input[type="submit"]').attr('disabled', 'disabled');
-        }
-        }
+        @*function areAllFieldsValid() {*@
+        @*var valid;*@
+        @*if(hasFormValidation()){*@
+        @*valid = $('form')[0].checkValidity();*@
+        @*}else{*@
+        @*valid = !(isUsernameInvalid($("#username").val()) || isPasswordInvalid($("#password").val()));*@
+        @*}*@
+        @*if(!hasNativeDateInput()){*@
+        @*valid = valid && !isBirthdayInvalid("birthdate");*@
+        @*}*@
+        @*return valid;*@
+        @*}*@
 
-        function updateFieldValidity(isInvalid, fieldSelector, messageSelector) {
-        if(isInvalid) {
-        $(fieldSelector).addClass('error');
-        $(messageSelector).removeClass('hide');
-        } else {
-        $(fieldSelector).removeClass('error');
-        $(messageSelector).addClass('hide');
-        }
-        }
+        @*function updateSubmitState() {*@
+        @*if (areAllFieldsValid()) {*@
+        @*$('input[type="submit"]').removeAttr('disabled');*@
+        @*}else{*@
+        @*$('input[type="submit"]').attr('disabled', 'disabled');*@
+        @*}*@
+        @*}*@
 
-        /*
-         * Birth Date
-         */
-        $("#birthdate").keyup(function (event) {
-        if(hasFormValidation()){
-        this.setCustomValidity("");
-        }
+        @*function updateFieldValidity(isInvalid, fieldSelector, messageSelector) {*@
+        @*if(isInvalid) {*@
+        @*$(fieldSelector).addClass('error');*@
+        @*$(messageSelector).removeClass('hide');*@
+        @*} else {*@
+        @*$(fieldSelector).removeClass('error');*@
+        @*$(messageSelector).addClass('hide');*@
+        @*}*@
+        @*}*@
 
-        var isInvalid;
-        if(!hasFormValidation() || !hasNativeDateInput()){
-        isInvalid = isBirthdayInvalid("birthdate");
-        }else{
-        isInvalid = !this.validity.valid;
-        }
+        @*/**@
+         @** Birth Date*@
+         @**/*@
+        @*$("#birthdate").keyup(function (event) {*@
+        @*if(hasFormValidation()){*@
+        @*this.setCustomValidity("");*@
+        @*}*@
 
-        updateFieldValidity(isInvalid, "#birthdate", "#error_msg_birthdate");
-        updateSubmitState();
-        });
+        @*var isInvalid;*@
+        @*if(!hasFormValidation() || !hasNativeDateInput()){*@
+        @*isInvalid = isBirthdayInvalid("birthdate");*@
+        @*}else{*@
+        @*isInvalid = !this.validity.valid;*@
+        @*}*@
 
-        /*
-         * Checks if the input with the given id is a valid birthdate or not
-         */
-        function isBirthdayInvalid(id){
-        re = /^(\d{1,2})\.(\d{1,2})\.(\d{4})$/;
-        value = getNormalizedDateString("#"+id);
-        console.log(value);
-        if (value != '') {
-        if (regs = value.match(re)) {
-        if (regs[1] < 1 || regs[1] > 31) {
-        return true;
-        }
-        if (regs[2] < 1 || regs[2] > 12) {
-        return true;
-        }
-        if (regs[3] < 1902 || regs[3] > (new Date()).getFullYear() + 100) {
-        return true;
-        }
-        return false;
-        }else{
-        return true;
-        }
-        } else {
-        return false;
-        }
-        }
+        @*updateFieldValidity(isInvalid, "#birthdate", "#error_msg_birthdate");*@
+        @*updateSubmitState();*@
+        @*});*@
 
-        /*
-         * User Name
-         */
-        $("#username").keyup(function (event){
-        if(hasFormValidation()){
-        this.setCustomValidity("");
-        }
+        @*/**@
+         @** Checks if the input with the given id is a valid birthdate or not*@
+         @**/*@
+        @*function isBirthdayInvalid(id){*@
+        @*re = /^(\d{1,2})\.(\d{1,2})\.(\d{4})$/;*@
+        @*value = getNormalizedDateString("#"+id);*@
+        @*console.log(value);*@
+        @*if (value != '') {*@
+        @*if (regs = value.match(re)) {*@
+        @*if (regs[1] < 1 || regs[1] > 31) {*@
+        @*return true;*@
+        @*}*@
+        @*if (regs[2] < 1 || regs[2] > 12) {*@
+        @*return true;*@
+        @*}*@
+        @*if (regs[3] < 1902 || regs[3] > (new Date()).getFullYear() + 100) {*@
+        @*return true;*@
+        @*}*@
+        @*return false;*@
+        @*}else{*@
+        @*return true;*@
+        @*}*@
+        @*} else {*@
+        @*return false;*@
+        @*}*@
+        @*}*@
 
-        var isInvalid;
-        if(!hasFormValidation()){
-        isInvalid = isUsernameInvalid($(event.target).val());
-        }else{
-        isInvalid = !this.validity.valid;
-        }
+        @*/**@
+         @** User Name*@
+         @**/*@
+        @*$("#username").keyup(function (event){*@
+        @*if(hasFormValidation()){*@
+        @*this.setCustomValidity("");*@
+        @*}*@
 
-        updateFieldValidity(isInvalid, "#username", "#error_msg_username");
-        updateSubmitState();
-        });
+        @*var isInvalid;*@
+        @*if(!hasFormValidation()){*@
+        @*isInvalid = isUsernameInvalid($(event.target).val());*@
+        @*}else{*@
+        @*isInvalid = !this.validity.valid;*@
+        @*}*@
 
-        /*
-         *  checks if the given input value is a valid username or not
-         */
-        function isUsernameInvalid(value) {
-        return value.length < 4 || value.length > 8;
-        }
+        @*updateFieldValidity(isInvalid, "#username", "#error_msg_username");*@
+        @*updateSubmitState();*@
+        @*});*@
 
-        /*
-         * Password
-         */
-        $("#password").keyup(function (event){
-        if(hasFormValidation()){
-        this.setCustomValidity("");
-        }
+        @*/**@
+         @**  checks if the given input value is a valid username or not*@
+         @**/*@
+        @*function isUsernameInvalid(value) {*@
+        @*return value.length < 4 || value.length > 8;*@
+        @*}*@
 
-        var isInvalid;
-        if(!hasFormValidation()){
-        isInvalid = isPasswordInvalid($(event.target).val());
-        }else{
-        isInvalid = !this.validity.valid;
-        }
+        @*/**@
+         @** Password*@
+         @**/*@
+        @*$("#password").keyup(function (event){*@
+        @*if(hasFormValidation()){*@
+        @*this.setCustomValidity("");*@
+        @*}*@
 
-        updateFieldValidity(isInvalid, "#password", "#error_msg_password");
-        updateSubmitState();
-        });
+        @*var isInvalid;*@
+        @*if(!hasFormValidation()){*@
+        @*isInvalid = isPasswordInvalid($(event.target).val());*@
+        @*}else{*@
+        @*isInvalid = !this.validity.valid;*@
+        @*}*@
 
-        /*
-         *   checks if the given input value is a valid username or not
-         */
-        function isPasswordInvalid(value) {
-        return value.length < 4 || value.length > 8;
-        }
-        //]]>
-        </script>
+        @*updateFieldValidity(isInvalid, "#password", "#error_msg_password");*@
+        @*updateSubmitState();*@
+        @*});*@
+
+        @*/**@
+         @**   checks if the given input value is a valid username or not*@
+         @**/*@
+        @*function isPasswordInvalid(value) {*@
+        @*return value.length < 4 || value.length > 8;*@
+        @*}*@
+        @*//]]>*@
+        @*</script>*@
     </body>
 </html>
