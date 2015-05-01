@@ -1,22 +1,35 @@
 package models;
 
 import at.ac.tuwien.big.we15.lab2.api.*;
+import play.data.validation.Constraints;
+import play.db.jpa.JPA;
+import play.db.jpa.Transactional;
 
 import javax.persistence.Entity;
+import javax.persistence.EntityManager;
 import javax.persistence.Id;
+import javax.validation.Constraint;
 import java.time.LocalDate;
-
 
 @Entity
 public class Benutzer implements at.ac.tuwien.big.we15.lab2.api.User{
 
     @Id
+    @Constraints.Required
+    @Constraints.MinLength(4)
+    @Constraints.MaxLength(8)
     private String name;
+
+    @Constraints.Required
+    @Constraints.MinLength(4)
+    @Constraints.MaxLength(8)
     private String password;
 
     private Avatar avatar;
     private String firstName;
     private String lastName;
+
+
     private LocalDate birthday;
     private String gender;  //"m" or "f"
 
@@ -86,4 +99,5 @@ public class Benutzer implements at.ac.tuwien.big.we15.lab2.api.User{
     public void setGender(String gender) {
         this.gender = gender;
     }
+
 }

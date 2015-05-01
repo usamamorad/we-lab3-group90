@@ -4,11 +4,14 @@ import at.ac.tuwien.big.we15.lab2.api.Avatar;
 import models.Benutzer;
 import play.data.DynamicForm;
 import play.data.Form;
+import play.db.jpa.JPA;
+import play.db.jpa.Transactional;
 import play.mvc.Controller;
 import play.mvc.Result;
 import views.html.authentication;
 import views.html.registration;
 
+import javax.persistence.EntityManager;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -17,37 +20,36 @@ import java.util.Locale;
 
 public class Registration extends Controller {
 
-//    public static Result authentication() {
-//        return ok(authentication.render("Jeopardy!"));
-//    }
-
 
     public static Result register() {
         return ok(registration.render("Jeopardy!"));
-   }
+    }
 
+    @Transactional
     public static Result registerUser() {
 
         DynamicForm form = Form.form().bindFromRequest();
         Benutzer benutzer = new Benutzer();
 
-        benutzer.setFirstName(form.data().get("firstname"));
-        benutzer.setLastName(form.data().get("lastname"));
-
-        //TODO validate birthday
-        if(form.data().get("birthdate") != "") {
-            benutzer.setBirthday(LocalDate.parse(form.data().get("birthdate")));
+        if(form.hasErrors()){
+            return badRequest(registration.render("Schlechtes Input!"));
         }
-        benutzer.setGender(form.data().get("gender"));
-        benutzer.setAvatar(Avatar.getAvatar(form.data().get("avatar")));
+        else {
+            benutzer.setFirstName(form.data().get("firstname"));
+            benutzer.setLastName(form.data().get("lastname"));
 
-        //TODO check if unique and length>4 and not null
-        benutzer.setName(form.data().get("username"));
+            //TODO validate birthday
+            if (form.data().get("birthdate") != "") {
+                benutzer.setBirthday(LocalDate.parse(form.data().get("birthdate")));
+            }
+            benutzer.setGender(form.data().get("gender"));
+            benutzer.setAvatar(Avatar.getAvatar(form.data().get("avatar")));
+            benutzer.setName(form.data().get("username"));
+            benutzer.setPassword(form.data().get("password"));
 
-        //TODO check lenghth>4 and not null
-        benutzer.setPassword(form.data().get("password"));
-
-        //return ok("Hallo"+benutzer.getName());
-        return ok(authentication.render("Jeopardy!"));
+            JPA.em().persist(benutzer);
+            //return ok("Hallo"+benutzer.getName());
+            return ok(authentication.render("Jeopardy!"));
+        }
     }
 }

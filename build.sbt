@@ -12,7 +12,7 @@ libraryDependencies ++= Seq(
   cache,
   javaWs,
   javaCore,   
-  javaJpa,   
+  javaJpa,
   "org.hibernate" % "hibernate-entitymanager" % "4.3.1.Final",
   "com.google.code.gson" % "gson" % "2.2" 
 )
