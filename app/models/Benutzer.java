@@ -105,4 +105,16 @@ public class Benutzer implements at.ac.tuwien.big.we15.lab2.api.User{
         this.avatarId = avatarId;
     }
 
+    @Override
+    public String toString() {
+        return "Benutzer{" +
+                "name='" + name + '\'' +
+                ", password='" + password + '\'' +
+                ", avatarId='" + avatarId + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", birthday=" + birthday +
+                ", gender='" + gender + '\'' +
+                '}';
+    }
 }
