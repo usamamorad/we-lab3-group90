@@ -11,12 +11,9 @@ import play.mvc.Result;
 import views.html.authentication;
 import views.html.registration;
 
-import javax.persistence.EntityManager;
-import java.text.SimpleDateFormat;
+import play.data.validation.Constraints.*;
+import javax.persistence.*;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
-import java.util.Locale;
 
 public class Registration extends Controller {
 
@@ -39,11 +36,11 @@ public class Registration extends Controller {
             benutzer.setLastName(form.data().get("lastname"));
 
             //TODO validate birthday
-            if (form.data().get("birthdate") != "") {
+            if (!form.data().get("birthdate").equals("")) {
                 benutzer.setBirthday(LocalDate.parse(form.data().get("birthdate")));
             }
             benutzer.setGender(form.data().get("gender"));
-            benutzer.setAvatar(Avatar.getAvatar(form.data().get("avatar")));
+            benutzer.setAvatarId(form.data().get("avatar"));
             benutzer.setName(form.data().get("username"));
             benutzer.setPassword(form.data().get("password"));
 

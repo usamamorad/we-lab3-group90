@@ -2,13 +2,10 @@ package models;
 
 import at.ac.tuwien.big.we15.lab2.api.*;
 import play.data.validation.Constraints;
-import play.db.jpa.JPA;
-import play.db.jpa.Transactional;
 
 import javax.persistence.Entity;
-import javax.persistence.EntityManager;
 import javax.persistence.Id;
-import javax.validation.Constraint;
+import play.data.validation.Constraints.*;
 import java.time.LocalDate;
 
 @Entity
@@ -25,7 +22,8 @@ public class Benutzer implements at.ac.tuwien.big.we15.lab2.api.User{
     @Constraints.MaxLength(8)
     private String password;
 
-    private Avatar avatar;
+
+    private String avatarId;
     private String firstName;
     private String lastName;
 
@@ -60,12 +58,12 @@ public class Benutzer implements at.ac.tuwien.big.we15.lab2.api.User{
 
     @Override
     public Avatar getAvatar() {
-        return avatar;
+        return Avatar.getAvatar(avatarId);
     }
 
     @Override
     public void setAvatar(Avatar avatar) {
-        this.avatar = avatar;
+        this.avatarId = avatar.getId();
     }
 
     public String getFirstName() {
@@ -98,6 +96,13 @@ public class Benutzer implements at.ac.tuwien.big.we15.lab2.api.User{
 
     public void setGender(String gender) {
         this.gender = gender;
+    }
+    public String getAvatarId() {
+        return avatarId;
+    }
+
+    public void setAvatarId(String avatarId) {
+        this.avatarId = avatarId;
     }
 
 }
