@@ -1,6 +1,7 @@
 package controllers;
 
 import models.Benutzer;
+import play.cache.Cache;
 import play.data.DynamicForm;
 import play.data.Form;
 import play.db.jpa.JPA;
@@ -46,7 +47,8 @@ public class Authentication extends Controller {
         System.out.println(userOK);
         if (userOK) {
             System.out.println("logged in as valid user!");
-            return redirect("/viewUser"); }
+            return redirect("/initGame");
+        }
         else{
             System.out.println("login failed - user not ok");
             loginForm.reject("authentication unsuccessful");
@@ -68,6 +70,7 @@ public class Authentication extends Controller {
     private static boolean checkUser(String username, String password){
         Benutzer user = findUserByUsername(username);
         if (user != null && user.getPassword().equals(password)) {
+            Cache.set("user", user);
             return true;
         }
         return false;

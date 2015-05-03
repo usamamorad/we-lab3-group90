@@ -29,14 +29,15 @@
                     <h2 id="loginheading" class="accessibility">Login</h2>
                     <form action="authenticate" method="post">
                         @helper.form(action=routes.Authentication.authenticateUser()) {
-                        <fieldset>
-                            <legend id="logindata">Login</legend>
-                            <label for="username">Benutzername:</label>
-                            <input name="username" id="username" type="text" required="required"/>
-                            <label for="password">Passwort:</label>
-                            <input name="password" id="password" type="password" required="required"/>
-                            <input name="login" id="loginsubmit" class="greenlink formlink clickable" type="submit" value="Anmelden"/>
-                        </fieldset> }
+                            <fieldset>
+                                <legend id="logindata">Login</legend>
+                                <label for="username">Benutzername:</label>
+                                <input name="username" id="username" type="text" required="required"/>
+                                <label for="password">Passwort:</label>
+                                <input name="password" id="password" type="password" required="required"/>
+                                <input name="login" id="loginsubmit" class="greenlink formlink clickable" type="submit" value="Anmelden"/>
+                            </fieldset>
+                        }
                     </form>
                 </section>
                     <!-- Register section -->
