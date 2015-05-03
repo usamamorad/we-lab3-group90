@@ -1,11 +1,9 @@
 package controllers;
 
-import at.ac.tuwien.big.we15.lab2.api.JeopardyFactory;
 import models.Benutzer;
 import play.cache.Cache;
 import play.data.DynamicForm;
 import play.data.Form;
-import play.db.jpa.JPA;
 import play.mvc.Controller;
 import play.mvc.Result;
 import views.html.authentication;
@@ -21,17 +19,17 @@ import java.util.List;
 
 public class Authentication extends Controller {
 
-    public static Result authentication() {
-        return ok(authentication.render("Jeopardy!",null));
+    public static Result index() {
+        return ok(authentication.render(null));
     }
 
     public static Result login() {
-        return redirect("/index");
+        return redirect("/");
     }
 
     public static Result logout() {
         session().clear();
-        return redirect("/index");
+        return redirect("/");
     }
 
     @play.db.jpa.Transactional(readOnly = true)
@@ -48,18 +46,19 @@ public class Authentication extends Controller {
         if(loginForm.hasErrors()){
             System.out.println("empty input");
             loginForm.reject(loginForm.globalError());
-            return badRequest(authentication.render("Jeopardy",null));
+            return badRequest(authentication.render(null));
         }else {
         
         boolean userOK = checkUser(user, pass);
         System.out.println(userOK);
         if (userOK) {
             System.out.println("logged in as valid user!");
-            return redirect("/viewUser"); }
+            return redirect(routes.Application.jeopardy());
+        }
         else {
             System.out.println("login failed - user not ok");
             loginForm.reject("authentication unsuccessful");
-            return badRequest(authentication.render("Jeopardy"));
+            return badRequest(authentication.render("Authentication error!"));
         }
 
         }
@@ -77,7 +76,10 @@ public class Authentication extends Controller {
     private static boolean checkUser(String username, String password){
         Benutzer user = findUserByUsername(username);
         if (user != null && user.getPassword().equals(password)) {
-            Cache.set("user", user);
+            //add authentication for the User in the HTTP session
+            Secured.addAuthentication(session(), user);
+            //add user Object in cache
+            Cache.set(Secured.getAuthentication(session())+"_user", user, 3600);
             return true;
         }
         return false;

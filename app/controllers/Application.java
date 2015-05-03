@@ -4,44 +4,48 @@ import at.ac.tuwien.big.we15.lab2.api.JeopardyFactory;
 import at.ac.tuwien.big.we15.lab2.api.JeopardyGame;
 import at.ac.tuwien.big.we15.lab2.api.impl.PlayJeopardyFactory;
 import models.Benutzer;
+import play.Logger;
 import play.cache.Cache;
 import play.mvc.*;
 
 import views.html.*;
 
+@Security.Authenticated(Secured.class)
 public class Application extends Controller {
 
-    /**
-     * shows LoginPage
-     * @return
-     */
-    public static Result index() {
-        return ok(authentication.render("Jeopardy!"));
+
+    @Security.Authenticated(Secured.class)
+    public static Result jeopardy() {
+        return ok(jeopardy.render(getCachedGame()));
+    }
+
+    @Security.Authenticated(Secured.class)
+    public static Result question() {
+        return ok(question.render(getCachedGame()));
     }
 
     /**
-     * creates a new Game if User is logged in
+     * creates a new Game
      * @return new JeoPardyGame
      */
-    public static Result initGame(){
-        //get user from cache
-        Benutzer user = (Benutzer) Cache.get("user");
+    @Security.Authenticated(Secured.class)
+    private static JeopardyGame initGame(){
 
-        //no user found go to login page
-        if(user == null){
-            return redirect("/");
+        Benutzer benutzer = getCachedBenutzer();
+        if(benutzer == null){
+            Logger.debug("problem! user not set in cache");
+            return null;
         }
 
-        JeopardyGame game = createNewGame(user);
+        JeopardyGame game = createNewGame(benutzer);
 
         if(game == null) {
-            return badRequest(authentication.render("Error in establishing the Game!"));
+            Logger.debug("problem! game=null");
+            return null;
         }
 
-        //Save GameData in Cache
-        Cache.set("game", game);
+        return game;
 
-        return ok(jeopardy.render(game));
     }
 
     /**
@@ -59,10 +63,40 @@ public class Application extends Controller {
             factory = new PlayJeopardyFactory("data.en.json");
         }
 
-        return factory.createGame(benutzer);
+        JeopardyGame game = factory.createGame(benutzer);
+
+        if(game == null){
+            return null;
+        }
+
+        //add game Object to cache
+        Cache.remove(Secured.getAuthentication(session())+"_game");
+        Cache.set(Secured.getAuthentication(session()) + "_game", game, 3600);
+
+        return game;
     }
 
-    public static Result jeopardy() {
-        return ok();
+    /**
+     * Vorbedingung: wird von einer @Security.Authenticated methode aufgerufen
+     * @return der Benutzer im cache sonst null
+     */
+    private static Benutzer getCachedBenutzer(){
+        if(Cache.get(Secured.getAuthentication(session()) + "_user") == null){
+            return null;
+        }
+        return (Benutzer) Cache.get(Secured.getAuthentication(session())+"_user");
     }
+
+    /**
+     * Vorbedingung: wird von einer @Security.Authenticated methode aufgerufen
+     * @return das GameObject im cache sonst ein neues Spiel
+     */
+    private static JeopardyGame getCachedGame(){
+        if(Cache.get(Secured.getAuthentication(session())+"_game") == null){
+            //create game
+            return initGame();
+        }
+        return (JeopardyGame) Cache.get(Secured.getAuthentication(session())+"_game");
+    }
+
 }
