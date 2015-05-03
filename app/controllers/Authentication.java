@@ -48,7 +48,7 @@ public class Authentication extends Controller {
         if(loginForm.hasErrors()){
             System.out.println("empty input");
             loginForm.reject(loginForm.globalError());
-            return badRequest(authentication.render("Jeopardy",null));
+            return badRequest(authentication.render("Jeopardy","* Input Fields cannot be empty"));
         }else {
         
         boolean userOK = checkUser(user, pass);
@@ -59,7 +59,7 @@ public class Authentication extends Controller {
         else {
             System.out.println("login failed - user not ok");
             loginForm.reject("authentication unsuccessful");
-            return badRequest(authentication.render("Jeopardy"));
+            return badRequest(authentication.render("Jeopardy","Login failed: not a valid user"));
         }
 
         }

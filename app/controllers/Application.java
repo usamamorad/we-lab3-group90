@@ -16,7 +16,7 @@ public class Application extends Controller {
      * @return
      */
     public static Result index() {
-        return ok(authentication.render("Jeopardy!"));
+        return ok(authentication.render("Jeopardy!",null));
     }
 
     /**
@@ -35,7 +35,7 @@ public class Application extends Controller {
         JeopardyGame game = createNewGame(user);
 
         if(game == null) {
-            return badRequest(authentication.render("Error in establishing the Game!"));
+            return badRequest(authentication.render("Error in establishing the Game!",null));
         }
 
         //Save GameData in Cache
