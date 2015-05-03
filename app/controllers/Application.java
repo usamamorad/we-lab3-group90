@@ -10,7 +10,12 @@ import java.util.List;
 
 public class Application extends Controller {
 
-    public static Result authentication() {
+//    public static Result authentication() {
+//        return ok(authentication.render("Jeopardy!"));
+
+
+
+    public static Result index() {
         return ok(authentication.render("Jeopardy!"));
     }
 
