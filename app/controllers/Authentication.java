@@ -1,5 +1,6 @@
 package controllers;
 
+import at.ac.tuwien.big.we15.lab2.api.JeopardyFactory;
 import models.Benutzer;
 import play.data.DynamicForm;
 import play.data.Form;
@@ -20,7 +21,7 @@ import java.util.List;
 public class Authentication extends Controller {
 
     public static Result authentication() {
-        return ok(authentication.render("Jeopardy!"));
+        return ok(authentication.render("Jeopardy!",null));
     }
 
     public static Result login() {
@@ -42,19 +43,25 @@ public class Authentication extends Controller {
 
         System.out.println(user + " "+ pass);
 
-        boolean userOK = checkUser(user, pass);
-        System.out.println(userOK);
-        if (userOK) {
-            System.out.println("logged in as valid user!");
-            return redirect("/viewUser"); }
-        else{
-            System.out.println("login failed - user not ok");
-            loginForm.reject("authentication unsuccessful");
-            return badRequest(authentication.render("Jeopardy"));
+        validateInput(loginForm,user,pass);
+        if(loginForm.hasErrors()){
+            System.out.println("empty input");
+            loginForm.reject(loginForm.globalError());
+            return badRequest(authentication.render("Jeopardy",null));
+        }else {
 
+            boolean userOK = checkUser(user, pass);
+            System.out.println(userOK);
+            if (userOK) {
+                System.out.println("logged in as valid user!");
+                return redirect("/viewUser");
+            } else {
+                System.out.println("login failed - user not ok");
+                //loginForm.reject("not a valid user");
+                return badRequest(authentication.render("Jeopardy","login failed - user not valid"));
+            }
 
         }
-
     }
 
     private static String getPassword(DynamicForm loginForm) {
@@ -83,6 +90,13 @@ public class Authentication extends Controller {
             return null;
         } else {
             return list.get(0);
+        }
+    }
+
+    private static void validateInput(Form form,String username, String password){
+
+        if (username==null || password==null){
+            form.reject("Fields cannot be empty");
         }
     }
 

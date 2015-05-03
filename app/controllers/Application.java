@@ -16,7 +16,7 @@ public class Application extends Controller {
 
 
     public static Result index() {
-        return ok(authentication.render("Jeopardy!"));
+        return ok(authentication.render("Jeopardy!",null));
     }
 
     @play.db.jpa.Transactional

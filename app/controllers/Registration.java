@@ -46,7 +46,7 @@ public class Registration extends Controller {
 
             JPA.em().persist(benutzer);
             //return ok("Hallo"+benutzer.getName());
-            return ok(authentication.render("Jeopardy!"));
+            return ok(authentication.render("Jeopardy!",null));
         }
     }
 }

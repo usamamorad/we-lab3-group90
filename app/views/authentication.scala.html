@@ -1,4 +1,7 @@
-@(message: String)
+
+@(message: String, errormsg: String )
+
+
 
 <!-- TODO UTF8 AND XML SETTINGS OF PAGE -->
 
@@ -36,7 +39,14 @@
                             <label for="password">Passwort:</label>
                             <input name="password" id="password" type="password" required="required"/>
                             <input name="login" id="loginsubmit" class="greenlink formlink clickable" type="submit" value="Anmelden"/>
-                        </fieldset> }
+                        </fieldset>
+                            @if(errormsg!=null) {
+                                <p class="error">
+                                @errormsg
+                                </p>
+                            }
+                    }
+
                     </form>
                 </section>
                     <!-- Register section -->
