@@ -1,29 +1,68 @@
 package controllers;
 
+import at.ac.tuwien.big.we15.lab2.api.JeopardyFactory;
+import at.ac.tuwien.big.we15.lab2.api.JeopardyGame;
+import at.ac.tuwien.big.we15.lab2.api.impl.PlayJeopardyFactory;
 import models.Benutzer;
+import play.cache.Cache;
 import play.mvc.*;
 
 import views.html.*;
 
-import javax.persistence.TypedQuery;
-import java.util.List;
-
 public class Application extends Controller {
 
-//    public static Result authentication() {
-//        return ok(authentication.render("Jeopardy!"));
-
-
-
+    /**
+     * shows LoginPage
+     * @return
+     */
     public static Result index() {
-        return ok(authentication.render("Jeopardy!",null));
+        return ok(authentication.render("Jeopardy!"));
     }
 
-    @play.db.jpa.Transactional
-    public static Result viewBenutzer() {
-        TypedQuery<Benutzer> q = play.db.jpa.JPA.em().createQuery("SELECT b FROM Benutzer b", Benutzer.class);
-        List<Benutzer> list = (List<Benutzer>) q.getResultList();
+    /**
+     * creates a new Game if User is logged in
+     * @return new JeoPardyGame
+     */
+    public static Result initGame(){
+        //get user from cache
+        Benutzer user = (Benutzer) Cache.get("user");
 
-        return ok(viewBenutzer.render(list));
+        //no user found go to login page
+        if(user == null){
+            return redirect("/");
+        }
+
+        JeopardyGame game = createNewGame(user);
+
+        if(game == null) {
+            return badRequest(authentication.render("Error in establishing the Game!"));
+        }
+
+        //Save GameData in Cache
+        Cache.set("game", game);
+
+        return ok(jeopardy.render(game));
+    }
+
+    /**
+     * creates a new Game with the correct Language
+     * @return new JeoPardyGame
+     */
+    private static JeopardyGame createNewGame(Benutzer benutzer){
+        String language = lang().language();
+
+        JeopardyFactory factory;
+
+        if(language.equals("de")){
+            factory = new PlayJeopardyFactory("data.de.json");
+        }else{
+            factory = new PlayJeopardyFactory("data.en.json");
+        }
+
+        return factory.createGame(benutzer);
+    }
+
+    public static Result jeopardy() {
+        return ok();
     }
 }

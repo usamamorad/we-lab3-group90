@@ -1,6 +1,5 @@
 package controllers;
 
-import at.ac.tuwien.big.we15.lab2.api.Avatar;
 import models.Benutzer;
 import play.data.DynamicForm;
 import play.data.Form;
@@ -11,8 +10,6 @@ import play.mvc.Result;
 import views.html.authentication;
 import views.html.registration;
 
-import play.data.validation.Constraints.*;
-import javax.persistence.*;
 import java.time.LocalDate;
 
 public class Registration extends Controller {

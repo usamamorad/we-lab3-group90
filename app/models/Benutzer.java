@@ -33,9 +33,10 @@ public class Benutzer implements at.ac.tuwien.big.we15.lab2.api.User{
 
     public Benutzer(){}
 
-    public Benutzer(String password, String username) {
+    public Benutzer(String password, String username, String avatarId) {
         this.password = password;
         this.name = username;
+        this.avatarId = avatarId;
     }
 
     public String getPassword() {
@@ -117,4 +118,30 @@ public class Benutzer implements at.ac.tuwien.big.we15.lab2.api.User{
                 ", gender='" + gender + '\'' +
                 '}';
     }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((name == null) ? 0 : name.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Benutzer other = (Benutzer) obj;
+        if (name == null) {
+            if (other.name != null)
+                return false;
+        } else if (!name.equals(other.name))
+            return false;
+        return true;
+    }
+
 }

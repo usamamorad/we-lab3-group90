@@ -2,6 +2,7 @@ package controllers;
 
 import at.ac.tuwien.big.we15.lab2.api.JeopardyFactory;
 import models.Benutzer;
+import play.cache.Cache;
 import play.data.DynamicForm;
 import play.data.Form;
 import play.db.jpa.JPA;
@@ -49,19 +50,20 @@ public class Authentication extends Controller {
             loginForm.reject(loginForm.globalError());
             return badRequest(authentication.render("Jeopardy",null));
         }else {
-
-            boolean userOK = checkUser(user, pass);
-            System.out.println(userOK);
-            if (userOK) {
-                System.out.println("logged in as valid user!");
-                return redirect("/viewUser");
-            } else {
-                System.out.println("login failed - user not ok");
-                //loginForm.reject("not a valid user");
-                return badRequest(authentication.render("Jeopardy","login failed - user not valid"));
-            }
+        
+        boolean userOK = checkUser(user, pass);
+        System.out.println(userOK);
+        if (userOK) {
+            System.out.println("logged in as valid user!");
+            return redirect("/viewUser"); }
+        else {
+            System.out.println("login failed - user not ok");
+            loginForm.reject("authentication unsuccessful");
+            return badRequest(authentication.render("Jeopardy"));
+        }
 
         }
+
     }
 
     private static String getPassword(DynamicForm loginForm) {
@@ -75,6 +77,7 @@ public class Authentication extends Controller {
     private static boolean checkUser(String username, String password){
         Benutzer user = findUserByUsername(username);
         if (user != null && user.getPassword().equals(password)) {
+            Cache.set("user", user);
             return true;
         }
         return false;

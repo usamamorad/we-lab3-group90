@@ -4,15 +4,18 @@
 
 # Home page
 GET         /                    controllers.Application.index()
+
 GET         /register            controllers.Registration.register()
 POST        /                    controllers.Registration.registerUser()
-GET         /viewUser            controllers.Application.viewBenutzer()
-POST        /viewUser            controllers.Application.viewBenutzer()
 
 GET         /login               controllers.Authentication.login()
 GET         /logout              controllers.Authentication.logout()
 GET         /authenticate        controllers.Authentication.authenticateUser()
 POST        /authenticate        controllers.Authentication.authenticateUser()
+
+GET        /initGame            controllers.Application.initGame()
+GET         /jeopardy            controllers.Application.jeopardy()
+#POST         /jeopardy            controllers.Application.jeopardy()
 
 # Map static resources from the /public folder to the /assets URL path
 GET         /assets/*file        controllers.Assets.at(path="/public", file)
