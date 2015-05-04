@@ -6,7 +6,7 @@
 GET         /                    controllers.Authentication.index()
 
 GET         /register            controllers.Registration.register()
-POST        /                    controllers.Registration.registerUser()
+POST        /register            controllers.Registration.registerUser()
 
 GET         /login               controllers.Authentication.login()
 GET         /logout              controllers.Authentication.logout()
