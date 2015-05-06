@@ -53,7 +53,7 @@ public class Authentication extends Controller {
         System.out.println(userOK);
         if (userOK) {
             System.out.println("logged in as valid user!");
-            return redirect(routes.Application.jeopardy());
+            return redirect(routes.Jeopardy.loadGame());
         }
         else {
             System.out.println("login failed - user not ok");

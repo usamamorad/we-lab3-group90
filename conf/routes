@@ -13,12 +13,13 @@ GET         /logout              controllers.Authentication.logout()
 GET         /authenticate        controllers.Authentication.authenticateUser()
 POST        /authenticate        controllers.Authentication.authenticateUser()
 
-GET         /jeopardy            controllers.Application.jeopardy()
-POST        /question            controllers.Application.question()
+GET         /jeopardy            controllers.Jeopardy.loadGame()
+#POST        /question            controllers.Application.question()
 
-POST         /jeopardy            controllers.Jeopardy.newGame()
+POST        /jeopardy            controllers.Jeopardy.loadGame()
+POST         /chooseQuestion     controllers.Jeopardy.chooseQuestionCategory()
 
-#GET     /quiz/question  controllers.Jeopardy.question()
+GET          /question           controllers.Jeopardy.loadQuestion()
 #GET     /quiz/round     controllers.Jeopardy.roundResult()
 #POST    /quiz/round     controllers.Jeopardy.newRound()
 
