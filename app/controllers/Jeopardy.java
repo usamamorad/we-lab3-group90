@@ -61,7 +61,8 @@ public class Jeopardy extends Controller{
     public static Result loadQuestion(){
         JeopardyGame current_game = getCachedGame();
 
-        System.out.println("QUESTION PAGE id: "+current_game.getHumanPlayer().getChosenQuestion().getText());
+        System.out.println("QUESTION PAGE id: "+current_game.getHumanPlayer().getChosenQuestion().getId());
+        System.out.println("QUESTION PAGE text: "+current_game.getHumanPlayer().getChosenQuestion().getText());
         return ok(question.render(current_game));
     }
 
