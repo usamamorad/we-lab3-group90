@@ -28,6 +28,10 @@ public class Authentication extends Controller {
     }
 
     public static Result logout() {
+
+        Cache.remove(Secured.getAuthentication(session()) + "_game");
+        Cache.remove(Secured.getAuthentication(session()) + "_user");
+
         session().clear();
         return redirect("/");
     }

@@ -14,6 +14,10 @@ import models.*;
 import views.html.jeopardy;
 import views.html.question;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 /**
  * Created by Andreea on 04/5/2015.
  */
@@ -22,7 +26,7 @@ public class Jeopardy extends Controller{
 
         public static JeopardyGame current_game;
 
-
+    @Security.Authenticated(Secured.class)
     public static Result loadGame() {
         //JeopardyFactory factory = new PlayJeopardyFactory("/conf/data.de.json");
         //JeopardyGame game = factory.createGame(Secured.getAuthentication(session()));
@@ -39,8 +43,6 @@ public class Jeopardy extends Controller{
         JeopardyGame current_game = getCachedGame();
         current_game.chooseHumanQuestion(id);
         System.out.println(current_game.getHumanPlayer().getChosenQuestion().getId()); //passt -> wird richtig gesetzt
-
-
 
         return redirect(routes.Jeopardy.loadQuestion());
     }
@@ -63,10 +65,49 @@ public class Jeopardy extends Controller{
 
         System.out.println("QUESTION PAGE id: "+current_game.getHumanPlayer().getChosenQuestion().getId());
         System.out.println("QUESTION PAGE text: "+current_game.getHumanPlayer().getChosenQuestion().getText());
-        return ok(question.render(current_game));
+
+        List<Answer> answers = getRandomisedAnswers(current_game.getHumanPlayer().getChosenQuestion());
+
+        return ok(question.render(current_game, answers));
     }
 
+    /**
+     * Gets a List of 4 Answers to show on Question Page for this Question
+     * @param q: Chosen Question of Human Player
+     * @return List of exactly 4 answers to display
+     */
+    private static List<Answer> getRandomisedAnswers(Question q){
 
+        int rnd = ((int)(Math.random()*q.getCorrectAnswers().size()))%3+1;
+
+        List<Answer> answers = new ArrayList<>();
+        List<Answer> correct = q.getCorrectAnswers();
+        List<Answer> wrong   = q.getAllAnswers();
+        wrong.removeAll(q.getCorrectAnswers());
+
+        //add correct answers
+        int x=0;
+        while(x < rnd){
+            answers.add(correct.get(x));
+            x++;
+        }
+        //add wrong answers
+        for(int i=0; i<4-(rnd) && i<wrong.size(); i++){
+            answers.add(wrong.get(i));
+        }
+
+        //auffuellen mit richtigen wenn falsche ausgegangen sind
+        if(answers.size() < 4){
+            while(x < correct.size() && answers.size() < 4) {
+                answers.add(correct.get(x));
+                x++;
+            }
+        }
+
+        //gut mischen
+        Collections.shuffle(answers);
+        return answers;
+    }
 
 
     //private methoden aus Application
