@@ -18,13 +18,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-/**
- * Created by Andreea on 04/5/2015.
- */
 @Security.Authenticated(Secured.class)
 public class Jeopardy extends Controller{
-
-        public static JeopardyGame current_game;
 
     @Security.Authenticated(Secured.class)
     public static Result loadGame() {
@@ -35,6 +30,7 @@ public class Jeopardy extends Controller{
     }
 
     //human chooses category and clicks waehlen
+    @Security.Authenticated(Secured.class)
     public static Result chooseQuestionCategory(){
 
         DynamicForm categoryForm = Form.form().bindFromRequest();
@@ -59,7 +55,7 @@ public class Jeopardy extends Controller{
 
 
     //------------------QUESTION PAGE-------------
-
+    @Security.Authenticated(Secured.class)
     public static Result loadQuestion(){
         JeopardyGame current_game = getCachedGame();
 
@@ -82,7 +78,7 @@ public class Jeopardy extends Controller{
 
         List<Answer> answers = new ArrayList<>();
         List<Answer> correct = q.getCorrectAnswers();
-        List<Answer> wrong   = q.getAllAnswers();
+        List<Answer> wrong   = new ArrayList<>(q.getAllAnswers());
         wrong.removeAll(q.getCorrectAnswers());
 
         //add correct answers

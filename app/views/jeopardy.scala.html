@@ -1,7 +1,24 @@
 @(game: at.ac.tuwien.big.we15.lab2.api.JeopardyGame)
+
+<!-- man kann hier einstellen wie die Waehrung aussieht, aber wahrscheinlich brauchen wir nicht unbedingt inkonsistenz zwischen game und auf der webseite -->
+@questionValue(i: Int) = {
+    @if(i==10){10}
+    @if(i==20){20}
+    @if(i==30){30}
+    @if(i==40){40}
+    @if(i==50){50}
+}
+
+@deactivate(question: at.ac.tuwien.big.we15.lab2.api.Question) = {
+
+    @for(q <- question.getCategory().getQuestions().filter(_.getValue() == question.getValue())) {
+        @if(game.hasBeenChosen(q)) {
+            disabled="disabled"
+        }
+    }
+}
+
 @if(game != null){
-
-
 
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">
@@ -63,13 +80,13 @@
                         </tr>
                     </table>
                 </section>
-                <!--TODO-->
-                <p id="round">Fragen: 1 / @game.getMaxQuestions()</p>
+
+                <p id="round">Fragen: @{val runde = game.getHumanPlayer().getAnsweredQuestions.size()+1; runde} / @game.getMaxQuestions()</p>
             </section>
 
                 <!-- Question -->
             <section id="question-selection" aria-labelledby="questionheading">
-                @if(game.isRoundStart() != true && game!=null){
+                @if(!game.isRoundStart() && game!=null){
 
                 <!--TODO komplett, es fehlt der Profitchange, dieser ist immer null, spielfluss fehlt -->
                     <h2 id="questionheading" class="black accessibility">Jeopardy</h2>
@@ -78,88 +95,41 @@
                     <p class="user-info">@game.getMarvin().getName() hat @game.getMarvinPlayer().getChosenQuestion().getCategory().getName() für € @game.getMarvinPlayer().getChosenQuestion().getValue() gewählt.</p>
 
                 }
-                    <!--TODO -->
-                    <p style="color:#BBB"><font style="color:hotpink">developer info:</font> momentan werden die Fragen nicht disabled, daher tauchen beim erneuten waehlen einer Frage nullpointer exceptions auf!</p>
 
                     @helper.form(action=routes.Jeopardy.chooseQuestionCategory()) {
                         <fieldset>
                             <legend class="accessibility">Fragenauswahl</legend>
-                            <section class="questioncategory" aria-labelledby="tvheading">
-                                <h3 id="tvheading" class="tile category-title"><span class="accessibility">Kategorie: </span>
-                                    TV</h3>
-                                <ol class="category_questions">
-                                    <li><input name="question_selection" id="question_1" value="1" type="radio" /><label class="tile clickable" for="question_1" onclick="activate()">
-                                        € 100</label></li>
-                                    <li><input name="question_selection" id="question_2" value="2" type="radio" /><label class="tile clickable" for="question_2" onclick="activate()">
-                                        € 200</label></li>
-                                    <li><input name="question_selection" id="question_3" value="3" type="radio" /><label class="tile clickable" for="question_3" onclick="activate()">
-                                        € 500</label></li>
-                                    <li><input name="question_selection" id="question_4" value="4" type="radio" /><label class="tile clickable" for="question_4" onclick="activate()">
-                                        € 750</label></li>
-                                </ol>
-                            </section>
-                            <section class="questioncategory" aria-labelledby="ssdheading">
-                                <h3 id="ssdheading" class="tile category-title"><span class="accessibility">
-                                    Kategorie: </span>SSD</h3>
-                                <ol class="category_questions">
-                                    <li><input name="question_selection" id="question_5" value="5" type="radio" /><label class="tile clickable" for="question_5" onclick="activate()">
-                                        € 100</label></li>
-                                    <li><input name="question_selection" id="question_6" value="6" type="radio" /><label class="tile clickable" for="question_6" onclick="activate()">
-                                        € 200</label></li>
-                                    <li><input name="question_selection" id="question_7" value="7" type="radio" /><label class="tile clickable" for="question_7" onclick="activate()">
-                                        € 500</label></li>
-                                    <li><input name="question_selection" id="question_8" value="8" type="radio" /><label class="tile clickable" for="question_8" onclick="activate()">
-                                        € 750</label></li>
-                                    <li><input name="question_selection" id="question_9" value="9" type="radio" /><label class="tile clickable" for="question_9" onclick="activate()">
-                                        € 1000</label></li>
-                                </ol>
-                            </section>
-                            <section class="questioncategory" aria-labelledby="webheading">
-                                <h3 id="webheading" class="tile category-title"><span class="accessibility">
-                                    Kategorie: </span>Web</h3>
-                                <ol class="category_questions">
-                                    <li><input name="question_selection" id="question_10" value="10" type="radio" /><label class="tile clickable" for="question_10" onclick="activate()">
-                                        € 100</label></li>
-                                    <li><input name="question_selection" id="question_11" value="11" type="radio" /><label class="tile clickable" for="question_11" onclick="activate()">
-                                        € 200</label></li>
-                                    <li><input name="question_selection" id="question_12" value="12" type="radio" /><label class="tile clickable" for="question_12" onclick="activate()">
-                                        € 500</label></li>
-                                    <li><input name="question_selection" id="question_13" value="13" type="radio" /><label class="tile clickable" for="question_13" onclick="activate()">
-                                        € 750</label></li>
-                                    <li><input name="question_selection" id="question_14" value="14" type="radio" /><label class="tile clickable" for="question_14" onclick="activate()">
-                                        € 1000</label></li>
-                                </ol>
-                            </section>
-                            <section class="questioncategory" aria-labelledby="sportheading">
-                                <h3 id="sportheading" class="tile category-title"><span class="accessibility">
-                                    Kategorie: </span>Sport</h3>
-                                <ol class="category_questions">
-                                    <li><input name="question_selection" id="question_15" value="15" type="radio" /><label class="tile clickable" for="question_15" onclick="activate()">
-                                        € 100</label></li>
-                                    <li><input name="question_selection" id="question_16" value="16" type="radio" /><label class="tile clickable" for="question_16" onclick="activate()">
-                                        € 200</label></li>
-                                    <li><input name="question_selection" id="question_17" value="17" type="radio" /><label class="tile clickable" for="question_17" onclick="activate()">
-                                        € 500</label></li>
-                                    <li><input name="question_selection" id="question_18" value="18" type="radio" /><label class="tile clickable" for="question_18" onclick="activate()">
-                                        € 750</label></li>
-                                </ol>
-                            </section>
-                            <section class="questioncategory" aria-labelledby="tuwienheading">
-                                <h3 id="tuwienheading" class="tile category-title"><span class="accessibility">
-                                    Kategorie: </span>TUWIEN</h3>
-                                <ol class="category_questions">
-                                    <li><input name="question_selection" id="question_19" value="19" type="radio" /><label class="tile clickable" for="question_19" onclick="activate()">
-                                        € 100</label></li>
-                                    <li><input name="question_selection" id="question_20" value="20" type="radio" /><label class="tile clickable" for="question_20" onclick="activate()">
-                                        € 200</label></li>
-                                    <li><input name="question_selection" id="question_21" value="21" type="radio" /><label class="tile clickable" for="question_21" onclick="activate()">
-                                        € 500</label></li>
-                                    <li><input name="question_selection" id="question_22" value="22" type="radio" /><label class="tile clickable" for="question_22" onclick="activate()">
-                                        € 750</label></li>
-                                    <li><input name="question_selection" id="question_23" value="23" type="radio" /><label class="tile clickable" for="question_23" onclick="activate()">
-                                        € 1000</label></li>
-                                </ol>
-                            </section>
+
+
+                            @for((category,x) <- game.getCategories().zipWithIndex){
+                                <section class="questioncategory" aria-labelledby="@category.getName()_heading">
+                                <h3 id="heading@(x+1)" class="tile category-title" style="height: 3em">
+                                    <span class="accessibility">Kategorie: </span>@category.getName()
+                                </h3>
+
+                                @if(category.getQuestions() != null){
+
+                                    <ol class="category_questions">
+
+                                    <!-- RANDOMLY CHOOSE ONE OF THE QUESTIONS IF THERE IS MORE THAN ONE QUESTION PER VALUE-->
+                                    @if(scala.util.Random.nextInt(2) == 0){
+                                        @for((question) <- category.getQuestions().groupBy(_.getValue()).map(_._2.head).toList sortBy(_.getValue())){
+                                            <li><input name="question_selection" id="question_@question.getId()" value="@question.getId()" type="radio" @deactivate(question) />
+                                                <label class="tile clickable" for="question_@question.getId()" onclick="activate()"  >€ @questionValue(question.getValue())</label>
+                                            </li>
+                                        }
+                                    }else{
+                                        @for((question) <- category.getQuestions().groupBy(_.getValue()).map(_._2.last).toList sortBy(_.getValue())){
+                                            <li><input name="question_selection" id="question_@question.getId()" value="@question.getId()" type="radio" @deactivate(question) />
+                                                <label class="tile clickable" for="question_@question.getId()" onclick="activate()" >€ @questionValue(question.getValue())</label>
+                                            </li>
+                                        }
+                                    }
+
+                                    </ol>
+                                }
+                                </section>
+                            }
                         </fieldset>
 
                         <input class="greenlink formlink clickable" name="question_submit" id="next" type="submit" value="wählen" accesskey="s" disabled="disabled" />
