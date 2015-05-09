@@ -19,12 +19,13 @@ GET         /jeopardy            controllers.Jeopardy.loadGame()
 POST        /jeopardy            controllers.Jeopardy.loadGame()
 POST         /chooseQuestion     controllers.Jeopardy.chooseQuestionCategory()
 
-GET          /question           controllers.Jeopardy.loadQuestion()
+POST          /question           controllers.Jeopardy.answerQuestion()
 #GET     /quiz/round     controllers.Jeopardy.roundResult()
 #POST    /quiz/round     controllers.Jeopardy.newRound()
 
 #GET     /quiz/result    controllers.Jeopardy.endResult()
 #POST    /quiz/answer    controllers.Jeopardy.addAnswer()
+POST     /winner            controllers.Jeopardy.nextGame()
 
 # Map static resources from the /public folder to the /assets URL path
 GET         /assets/*file        controllers.Assets.at(path="/public", file)

@@ -19,10 +19,10 @@ public class Application extends Controller {
         return ok(jeopardy.render(getCachedGame()));
     }
 
-    @Security.Authenticated(Secured.class)
-    public static Result question() {
-        return ok(question.render(getCachedGame()));
-    }
+//    @Security.Authenticated(Secured.class)
+//    public static Result question() {
+//        return ok(question.render(getCachedGame()));
+//    }
 
     /**
      * creates a new Game

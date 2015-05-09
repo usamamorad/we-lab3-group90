@@ -13,7 +13,9 @@ import play.mvc.Security;
 import models.*;
 import views.html.jeopardy;
 import views.html.question;
+import views.html.winner;
 
+import javax.servlet.annotation.ServletSecurity;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -40,7 +42,11 @@ public class Jeopardy extends Controller{
         current_game.chooseHumanQuestion(id);
         System.out.println(current_game.getHumanPlayer().getChosenQuestion().getId()); //passt -> wird richtig gesetzt
 
-        return redirect(routes.Jeopardy.loadQuestion());
+//        return redirect(routes.Jeopardy.loadQuestion());
+
+        List<Answer> answers = getRandomisedAnswers(current_game.getHumanPlayer().getChosenQuestion());
+
+        return ok(question.render(current_game, answers));
     }
 
     private int getCurrentRoundNr(SimpleJeopardyGame game){
@@ -55,17 +61,39 @@ public class Jeopardy extends Controller{
 
 
     //------------------QUESTION PAGE-------------
+//    @Security.Authenticated(Secured.class)
+//    public static Result loadQuestion(){
+//        JeopardyGame current_game = getCachedGame();
+//
+//        System.out.println("QUESTION PAGE id: "+current_game.getHumanPlayer().getChosenQuestion().getId());
+//        System.out.println("QUESTION PAGE text: "+current_game.getHumanPlayer().getChosenQuestion().getText());
+//
+//        List<Answer> answers = getRandomisedAnswers(current_game.getHumanPlayer().getChosenQuestion());
+//
+//        return ok(question.render(current_game, answers));
+//    }
     @Security.Authenticated(Secured.class)
-    public static Result loadQuestion(){
-        JeopardyGame current_game = getCachedGame();
+    public static Result answerQuestion(){
+        QuestionForm questionForm = Form.form(QuestionForm.class).bindFromRequest().get();
 
-        System.out.println("QUESTION PAGE id: "+current_game.getHumanPlayer().getChosenQuestion().getId());
-        System.out.println("QUESTION PAGE text: "+current_game.getHumanPlayer().getChosenQuestion().getText());
+        JeopardyGame game = getCachedGame();
+        game.answerHumanQuestion(questionForm.getAnswers());
 
-        List<Answer> answers = getRandomisedAnswers(current_game.getHumanPlayer().getChosenQuestion());
-
-        return ok(question.render(current_game, answers));
+        if(game.isGameOver()){
+            return ok(winner.render(game));
+        }
+        else{
+            return ok(jeopardy.render(game));
+        }
     }
+
+    @Security.Authenticated(Secured.class)
+    public static Result nextGame(){
+        JeopardyGame game = initGame();
+
+        return ok(jeopardy.render(game));
+    }
+
 
     /**
      * Gets a List of 4 Answers to show on Question Page for this Question

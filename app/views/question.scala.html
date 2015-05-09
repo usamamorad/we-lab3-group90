@@ -68,20 +68,21 @@
 
                 <!-- Question -->
             <section id="question" aria-labelledby="questionheading">
-                <form id="questionform" action="/jeopardy" method="get">
+                @helper.form(action=routes.Jeopardy.answerQuestion) {
                     <h2 id="questionheading" class="accessibility">Frage</h2>
-                    <p id="questiontype">@game.getHumanPlayer().getChosenQuestion.getCategory.getName() für € @game.getHumanPlayer().getChosenQuestion.getValue </p>
+                    <p id="questiontype">@game.getHumanPlayer().getChosenQuestion.getCategory.getName()
+                        für € @game.getHumanPlayer().getChosenQuestion.getValue </p>
                     <p id="questiontext">@game.getHumanPlayer().getChosenQuestion().getText()</p>
 
                     <ul id="answers">
-                    @for((answer,i) <- answers.zipWithIndex) {
-                        <li><input name="answers" id="answer_@(i+1)" value="@(i+1)" type="checkbox"/> <label class="tile clickable" for="answer_@(i+1)">@answer.getText()</label></li>
+                    @for((answer, i) <- answers.zipWithIndex) {
+                        <li><input name="answers[@i]" id="answer_@(i + 1)" value="@answer.getId" type="checkbox"/> <label class="tile clickable" for="answer_@(i + 1)">@answer.getText()</label></li>
                     }
                     </ul>
 
                     <input id="timeleftvalue" type="hidden" value="100"/>
                     <input class="greenlink formlink clickable" name="answer_submit" id="next" type="submit" value="antworten" accesskey="s"/>
-                </form>
+                }
             </section>
 
             <section id="timer" aria-labelledby="timerheading">
