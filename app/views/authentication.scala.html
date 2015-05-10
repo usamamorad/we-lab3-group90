@@ -1,7 +1,5 @@
 @(errormsg: String)
 
-<!-- TODO UTF8 AND XML SETTINGS OF PAGE -->
-
 <!DOCTYPE html>
     <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">
         <head>
@@ -38,7 +36,7 @@
                             <input name="login" id="loginsubmit" class="greenlink formlink clickable" type="submit" value="Anmelden"/>
                         </fieldset>
                             @if(errormsg!=null) {
-                                <p class="error">
+                                <p class="error" style="color:red">
                                 @errormsg
                                 </p>
                             }

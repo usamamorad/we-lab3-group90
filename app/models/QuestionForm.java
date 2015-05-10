@@ -1,7 +1,5 @@
 package models;
 
-import at.ac.tuwien.big.we15.lab2.api.Answer;
-
 import java.util.ArrayList;
 import java.util.List;
 

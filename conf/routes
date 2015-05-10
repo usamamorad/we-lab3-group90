@@ -3,29 +3,23 @@
 # ~~~~
 
 # Home page
-GET         /                    controllers.Authentication.index()
+GET         /                      controllers.Authentication.index()
 
-GET         /register            controllers.Registration.register()
-POST        /register            controllers.Registration.registerUser()
+GET         /register              controllers.Registration.register()
+POST        /register              controllers.Registration.registerUser()
 
-GET         /login               controllers.Authentication.login()
-GET         /logout              controllers.Authentication.logout()
-GET         /authenticate        controllers.Authentication.authenticateUser()
-POST        /authenticate        controllers.Authentication.authenticateUser()
+GET         /login                 controllers.Authentication.login()
+GET         /logout                controllers.Authentication.logout()
+GET         /authenticate          controllers.Authentication.authenticateUser()
+POST        /authenticate          controllers.Authentication.authenticateUser()
 
-GET         /jeopardy            controllers.Jeopardy.loadGame()
-#POST        /question            controllers.Application.question()
+GET         /jeopardy              controllers.Jeopardy.loadGame()
+POST        /jeopardy              controllers.Jeopardy.loadGame()
 
-POST        /jeopardy            controllers.Jeopardy.loadGame()
-POST         /chooseQuestion     controllers.Jeopardy.chooseQuestionCategory()
+POST        /chooseQuestion        controllers.Jeopardy.chooseQuestionCategory()
 
-POST          /question           controllers.Jeopardy.answerQuestion()
-#GET     /quiz/round     controllers.Jeopardy.roundResult()
-#POST    /quiz/round     controllers.Jeopardy.newRound()
-
-#GET     /quiz/result    controllers.Jeopardy.endResult()
-#POST    /quiz/answer    controllers.Jeopardy.addAnswer()
-POST     /winner            controllers.Jeopardy.nextGame()
+POST        /question              controllers.Jeopardy.answerQuestion()
+POST        /winner                controllers.Jeopardy.nextGame()
 
 # Map static resources from the /public folder to the /assets URL path
-GET         /assets/*file        controllers.Assets.at(path="/public", file)
+GET         /assets/*file          controllers.Assets.at(path="/public", file)

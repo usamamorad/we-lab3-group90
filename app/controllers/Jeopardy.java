@@ -2,7 +2,6 @@ package controllers;
 
 import at.ac.tuwien.big.we15.lab2.api.*;
 import at.ac.tuwien.big.we15.lab2.api.impl.PlayJeopardyFactory;
-import at.ac.tuwien.big.we15.lab2.api.impl.SimpleJeopardyGame;
 import play.Logger;
 import play.cache.Cache;
 import play.data.DynamicForm;
@@ -15,7 +14,6 @@ import views.html.jeopardy;
 import views.html.question;
 import views.html.winner;
 
-import javax.servlet.annotation.ServletSecurity;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -25,8 +23,6 @@ public class Jeopardy extends Controller{
 
     @Security.Authenticated(Secured.class)
     public static Result loadGame() {
-        //JeopardyFactory factory = new PlayJeopardyFactory("/conf/data.de.json");
-        //JeopardyGame game = factory.createGame(Secured.getAuthentication(session()));
         JeopardyGame game = getCachedGame();
         return ok(jeopardy.render(game));
     }
@@ -40,38 +36,14 @@ public class Jeopardy extends Controller{
 
         JeopardyGame current_game = getCachedGame();
         current_game.chooseHumanQuestion(id);
-        System.out.println(current_game.getHumanPlayer().getChosenQuestion().getId()); //passt -> wird richtig gesetzt
-
-//        return redirect(routes.Jeopardy.loadQuestion());
 
         List<Answer> answers = getRandomisedAnswers(current_game.getHumanPlayer().getChosenQuestion());
 
         return ok(question.render(current_game, answers));
+
     }
 
-    private int getCurrentRoundNr(SimpleJeopardyGame game){
-        int human_has_answered=game.getHumanPlayer().getAnsweredQuestions().size();
-        int computer_has_answered=game.getMarvinPlayer().getAnsweredQuestions().size();
-
-        if(computer_has_answered>human_has_answered){ //human has not answered yet this round
-            return human_has_answered;
-        }
-        else{ return computer_has_answered;}
-            }
-
-
-    //------------------QUESTION PAGE-------------
-//    @Security.Authenticated(Secured.class)
-//    public static Result loadQuestion(){
-//        JeopardyGame current_game = getCachedGame();
-//
-//        System.out.println("QUESTION PAGE id: "+current_game.getHumanPlayer().getChosenQuestion().getId());
-//        System.out.println("QUESTION PAGE text: "+current_game.getHumanPlayer().getChosenQuestion().getText());
-//
-//        List<Answer> answers = getRandomisedAnswers(current_game.getHumanPlayer().getChosenQuestion());
-//
-//        return ok(question.render(current_game, answers));
-//    }
+    //Question Page
     @Security.Authenticated(Secured.class)
     public static Result answerQuestion(){
         QuestionForm questionForm = Form.form(QuestionForm.class).bindFromRequest().get();
@@ -101,6 +73,9 @@ public class Jeopardy extends Controller{
      * @return List of exactly 4 answers to display
      */
     private static List<Answer> getRandomisedAnswers(Question q){
+
+        if(q==null)
+            return null;
 
         int rnd = ((int)(Math.random()*q.getCorrectAnswers().size()))%3+1;
 
@@ -133,8 +108,6 @@ public class Jeopardy extends Controller{
         return answers;
     }
 
-
-    //private methoden aus Application
 
     /**
      * creates a new Game
@@ -182,8 +155,7 @@ public class Jeopardy extends Controller{
         }
 
         //add game Object to cache
-        Cache.remove(Secured.getAuthentication(session()) + "_game");
-        Cache.set(Secured.getAuthentication(session()) + "_game", game, 3600);
+        cacheGame(game);
 
         return game;
     }
@@ -209,13 +181,14 @@ public class Jeopardy extends Controller{
             return initGame();
         }
         return (JeopardyGame) Cache.get(Secured.getAuthentication(session())+"_game");
-                   }
+    }
 
     /**
      * add current game state to cache
      * @param game
      */
-    private static void cachegame(JeopardyGame game){
+    private static void cacheGame(JeopardyGame game){
+        Cache.remove(Secured.getAuthentication(session()) + "_game");
         Cache.set(Secured.getAuthentication(session()) + "_game", game, 3600);
     }
 }

@@ -19,7 +19,7 @@ public class Registration extends Controller {
 
 
     public static Result register() {
-        return ok(registration.render("Jeopardy!"));
+        return ok(registration.render(null));
     }
 
     @Transactional
@@ -35,7 +35,7 @@ public class Registration extends Controller {
             benutzer.setFirstName(form.data().get("firstname"));
             benutzer.setLastName(form.data().get("lastname"));
 
-            //TODO validate birthday
+            //validate birthday
            if (!form.data().get("birthdate").equals("")) {
                 benutzer.setBirthday(LocalDate.parse(form.data().get("birthdate")));
             }
@@ -43,7 +43,7 @@ public class Registration extends Controller {
             benutzer.setGender(form.data().get("gender"));
             benutzer.setAvatarId(form.data().get("avatar"));
 
-            //TODO username should not be already used
+            //username should not be already used
             if(checkUserByUsername(form.data().get("username"))){
                 benutzer.setName(form.data().get("username"));
             }
@@ -54,7 +54,7 @@ public class Registration extends Controller {
             benutzer.setPassword(form.data().get("password"));
 
             JPA.em().persist(benutzer);
-            //return ok("Hallo"+benutzer.getName());
+
             return ok(authentication.render(null));
         }
     }
@@ -69,7 +69,6 @@ public class Registration extends Controller {
         EntityManager em = play.db.jpa.JPA.em();
         String queryStr = " select b from Benutzer b where b.name = :username";
         TypedQuery<Benutzer> query = em.createQuery(queryStr,Benutzer.class).setParameter("username", username);
-        // TypedQuery<Benutzer> query = em.createQuery(queryStr,Benutzer.class);
         List<Benutzer> list = query.getResultList();
         if (list.isEmpty()) {
             return true;
