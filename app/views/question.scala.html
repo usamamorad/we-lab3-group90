@@ -40,7 +40,11 @@
                     <table>
                         <tr>
                             <th class="accessibility">Spielername</th>
-                            <td class="playername">@game.getLeader().getUser().getName() (Du)</td>
+                            @if(game.getHumanPlayer() == game.getLeader()) {
+                                <td class="playername">@game.getLeader().getUser().getName() (Du)</td>
+                            }else {
+                                <td class="playername">@game.getLeader().getUser().getName()</td>
+                            }
                         </tr>
                         <tr>
                             <th class="accessibility">Spielerpunkte</th>
@@ -54,7 +58,11 @@
                     <table>
                         <tr>
                             <th class="accessibility">Spielername</th>
-                            <td class="playername">@game.getSecond().getUser().getName()</td>
+                            @if(game.getHumanPlayer() == game.getSecond()) {
+                                <td class="playername">@game.getSecond().getUser().getName() (Du)</td>
+                            }else {
+                                <td class="playername">@game.getSecond().getUser().getName()</td>
+                            }
                         </tr>
                         <tr>
                             <th class="accessibility">Spielerpunkte</th>
@@ -68,7 +76,7 @@
 
                 <!-- Question -->
             <section id="question" aria-labelledby="questionheading">
-                @helper.form(action=routes.Jeopardy.answerQuestion) {
+                @helper.form(action=routes.Jeopardy.answerQuestion, 'id -> "questionform") {
                     <h2 id="questionheading" class="accessibility">Frage</h2>
                     <p id="questiontype">@game.getHumanPlayer().getChosenQuestion.getCategory.getName()
                         für € @game.getHumanPlayer().getChosenQuestion.getValue </p>

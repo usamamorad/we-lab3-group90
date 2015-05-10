@@ -58,7 +58,11 @@
                     <table>
                         <tr>
                             <th class="accessibility">Spielername</th>
-                            <td class="playername">@game.getLeader().getUser().getName() (Du)</td>
+                            @if(game.getHumanPlayer() == game.getLeader()) {
+                                <td class="playername">@game.getLeader().getUser().getName() (Du)</td>
+                            }else {
+                                <td class="playername">@game.getLeader().getUser().getName()</td>
+                            }
                         </tr>
                         <tr>
                             <th class="accessibility">Spielerpunkte</th>
@@ -72,7 +76,12 @@
                     <table>
                         <tr>
                             <th class="accessibility">Spielername</th>
-                            <td class="playername">@game.getSecond().getUser().getName()</td>
+                            @if(game.getHumanPlayer() == game.getSecond()) {
+                                <td class="playername">@game.getSecond().getUser().getName() (Du)</td>
+                            }else {
+                                <td class="playername">@game.getSecond().getUser().getName()</td>
+                            }
+
                         </tr>
                         <tr>
                             <th class="accessibility">Spielerpunkte</th>
@@ -81,7 +90,7 @@
                     </table>
                 </section>
 
-                <p id="round">Fragen: @{val runde = game.getHumanPlayer().getAnsweredQuestions.size()+1; runde} / @game.getMaxQuestions()</p>
+                <p id="round">Fragen: @{val runde = game.getHumanPlayer().getAnsweredQuestions.size(); runde} / @game.getMaxQuestions()</p>
             </section>
 
                 <!-- Question -->

@@ -2,11 +2,12 @@ package models;
 
 import at.ac.tuwien.big.we15.lab2.api.Answer;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class QuestionForm {
 
-    private List<Integer> answers;  //chosen answers
+    private List<Integer> answers = new ArrayList<Integer>();  //chosen answers
 
     public List<Integer> getAnswers() {
         return answers;
