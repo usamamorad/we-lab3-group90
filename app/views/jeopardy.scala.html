@@ -1,5 +1,7 @@
 @(game: at.ac.tuwien.big.we15.lab2.api.JeopardyGame)
 
+@import play.i18n.Messages
+
 <!-- man kann hier einstellen wie die Waehrung aussieht, aber wahrscheinlich brauchen wir nicht unbedingt inkonsistenz zwischen game und auf der webseite -->
 @questionValue(i: Int) = {
     @if(i==10){10}
@@ -20,12 +22,13 @@
 
 @if(game != null){
 
+<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">
     <head>
         <meta charset="utf-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Business Informatics Group Jeopardy! - Fragenauswahl</title>
+        <title>@Messages.get("title") Jeopardy! - @Messages.get("chooseQuestion")</title>
         <link rel="stylesheet" type="text/css" href="@routes.Assets.at("stylesheets/base.css")" />
         <link rel="stylesheet" type="text/css" href="@routes.Assets.at("stylesheets/screen.css")" />
         <script src="@routes.Assets.at("javascripts/jquery.js")" type="text/javascript"></script>

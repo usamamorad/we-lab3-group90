@@ -1,62 +1,65 @@
 @(errormsg: String)
 
+@import play.i18n.Messages
+
+<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="@Messages.get("lang")" lang="@Messages.get("lang")">
     <head>
         <meta charset="utf-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Business Informatics Group Jeopardy! - Registrieren<title>
+        <title>@Messages.get("title") - @Messages.get("register")</title>
         <link rel="stylesheet" type="text/css" href="@routes.Assets.at("stylesheets/base.css")" />
         <link rel="stylesheet" type="text/css" href="@routes.Assets.at("stylesheets/screen.css")" />
     </head>
     <body id="register-page">
-        <a title="Zur Registrierung springen" class="accessibility" href="#register">Zur Registrierung springen</a>
+        <a title="@Messages.get("jumpToRegister")" class="accessibility" href="/register">@Messages.get("jumpToRegister")</a>
 
             <!-- Header -->
         <header role="banner" aria-labelledby="bannerheading">
             <h1 id="bannerheading">
-                <span class="accessibility">Business Informatics Group </span><span class="gametitle">Jeopardy!</span>
+                <span class="accessibility">@Messages.get("title") </span><span class="gametitle">Jeopardy!</span>
             </h1>
         </header>
 
             <!-- Navigation -->
         <nav role="navigation" aria-labelledby="navheading">
-            <h2 id="navheading" class="accessibility">Navigation</h2>
+            <h2 id="navheading" class="accessibility">@Messages.get("navigation")</h2>
             <ul>
-                <li><a class="orangelink navigationlink" id="loginlink" title="Klicke hier um dich anzumelden" href="/login" accesskey="l">Anmelden</a></li>
+                <li><a class="orangelink navigationlink" id="loginlink" title="@Messages.get("clickToLogin")" href="/login" accesskey="l">@Messages.get("login")</a></li>
             </ul>
         </nav>
 
             <!-- Content -->
         <div id="register" role="main">
                 <!-- Register section -->
-            <h2 id="registerheading" class="accessibility">Registrierung</h2>
+            <h2 id="registerheading" class="accessibility">@Messages.get("registration")</h2>
 
             @helper.form(action=routes.Registration.registerUser){
                 <fieldset>
-                    <legend>Persönliche Daten</legend>
-                    <label for="firstname">Vorname:</label>
+                    <legend>@Messages.get("personalData")</legend>
+                    <label for="firstname">@Messages.get("firstname"):</label>
                     <input id="firstname" type="text" name="firstname"/>
 
-                    <label for="lastname">Nachname:</label>
+                    <label for="lastname">@Messages.get("lastname"):</label>
                     <input id="lastname" type="text" name="lastname"/>
 
-                    <label for="birthdate">Geburtstag:</label>
+                    <label for="birthdate">@Messages.get("birthdate"):</label>
                     <input id="birthdate" type="date" name="birthdate"/>
-                    <div id="error_msg_birthdate" class="hide" role="alert">Verwenden Sie bitte folgendes Datumsformat: dd.mm.yyyy (z.B. 24.12.2010).</div>
+                    <div id="error_msg_birthdate" class="hide" role="alert">@Messages.get("birthError")</div>
 
-                    <label>Geschlecht:</label>
+                    <label>@Messages.get("gender"):</label>
                     <fieldset class="inputset">
                         <input type="radio" name="gender" id="male" value="m" checked="checked" />
-                        <label for="male">Männlich</label>
+                        <label for="male">@Messages.get("male")</label>
                         <input type="radio" name="gender" id="female" value="f" />
-                        <label for="female">Weiblich</label>
+                        <label for="female">@Messages.get("female")</label>
                     </fieldset>
 
 
                 </fieldset>
                 <fieldset>
-                    <legend>Spielerdaten</legend>
+                    <legend>@Messages.get("playerData")</legend>
                     <label for="avatar">Avatar:</label>
                     <select id="avatar" name="avatar">
                         <option value="aldrich-killian">Aldrich Killian</option>
@@ -103,14 +106,14 @@
                         <option value="wolverine">Wolverine</option>
                     </select>
 
-                    <label for="username">Benutzername*:</label>
+                    <label for="username">@Messages.get("username")*:</label>
                     <input id="username" type="text" required="required" pattern="\w{4,8}" name="username"/>
-                    <div id="error_msg_username" class="hide" role="alert">Der Benutzername muss mindestens 4 Zeichen und darf maximal 8 Zeichen enthalten.</div>
+                    <div id="error_msg_username" class="hide" role="alert">@Messages.get("usernameError")</div>
 
-                    <label for="password">Passwort*:</label>
+                    <label for="password">@Messages.get("password")*:</label>
                     <input id="password" type="password" required="required" pattern="\w{4,8}" name="password"/>
-                    <div id="error_msg_password" class="hide" role="alert">Das Passwort muss mindestens 4 Zeichen und darf maximal 8 Zeichen enthalten.</div>
-                    <input class="greenlink formlink" type="submit" value="Registrieren" accesskey="s"/>
+                    <div id="error_msg_password" class="hide" role="alert">@Messages.get("passwordError")</div>
+                    <input class="greenlink formlink" type="submit" value="@Messages.get("register")" accesskey="s"/>
 
 
                 </fieldset>
@@ -120,7 +123,7 @@
                     </p>
                 }
 
-                <p id="requiredhint">Mit "*" gekennzeichnete Felder sind Pflichtfelder</p>
+                <p id="requiredhint">@Messages.get("mustFields")</p>
 
             }
         </div>

@@ -1,4 +1,32 @@
+lang=en
 authUnsuccessful=authentication unsuccessful!
 emptyFieldError=Fields cannot be empty!
 badInput=Bad Input!
 userExistError=User already exists!
+title=Business Informatics Group
+login=Login
+register=Register
+jumpToLogin=Jump to login
+clickToRegister=Click here to Register
+username=Username
+password=Password
+registration=Registration
+notRegisteredQuestion=Not registered?
+toRegisteration=To Registration
+
+jumpToRegister=Jump to Registration
+navigation=Navigation
+clickToLogin=Click here to login
+firstname=Firstname
+lastname=Lastname
+birthdate=Birthdate
+birthError=Please use the following Format: dd.mm.yyyy (e.g. 24.12.2010).
+gender=Gender
+personalData=Personal Data
+male=Male
+female=Female
+playerData=Player Data
+usernameError=The username must have at least 4 characters and must have max 8 characters.
+passwordError=The password must have at least 4 characters and must have max 8 characters.
+mustFields=With "*" assined Fields are required.
+

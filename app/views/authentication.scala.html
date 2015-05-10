@@ -1,39 +1,42 @@
 @(errormsg: String)
 
+@import play.i18n.Messages
+
+<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html>
-    <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">
+    <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="@Messages.get("lang")" lang="@Messages.get("lang")">
         <head>
             <meta charset="utf-8"/>
             <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-            <title>Business Informatics Group Jeopardy! - Login</title>
+            <title> @Messages.get("title") Jeopardy! - @Messages.get("login")</title>
             <!-- REVERSE ROUTING -->
             <link rel="stylesheet" type="text/css" href="@routes.Assets.at("stylesheets/base.css")" />
             <link rel="stylesheet" type="text/css" href="@routes.Assets.at("stylesheets/screen.css")" />
         </head>
 
         <body id="login-page">
-            <a class="accessibility" href="#login">Zum Login springen</a>
-            <a class="accessibility" title="Klicke hier um dich zu registrieren" href="register" accesskey="r">Registrieren</a>
+            <a class="accessibility" href="#login">@Messages.get("jumpToLogin")</a>
+            <a class="accessibility" title="@Messages.get("clickToRegister")" href="register" accesskey="r">@Messages.get("register")</a>
                 <!-- Header -->
             <header role="banner" aria-labelledby="bannerheading">
                 <h1 id="bannerheading">
-                    <span class="accessibility">Business Informatics Group </span><span class="gametitle">Jeopardy!</span>
+                    <span class="accessibility">@Messages.get("title") </span><span class="gametitle">Jeopardy!</span>
                 </h1>
             </header>
 
                 <!-- Content -->
             <div role="main">
                 <section id="login" aria-labelledby="loginheading">
-                    <h2 id="loginheading" class="accessibility">Login</h2>
+                    <h2 id="loginheading" class="accessibility">@Messages.get("login")</h2>
                     <form action="authenticate" method="post">
                         @helper.form(action=routes.Authentication.authenticateUser()) {
                         <fieldset>
-                            <legend id="logindata">Login</legend>
-                            <label for="username">Benutzername:</label>
+                            <legend id="logindata">@Messages.get("login")</legend>
+                            <label for="username">@Messages.get("username"):</label>
                             <input name="username" id="username" type="text" required="required"/>
-                            <label for="password">Passwort:</label>
+                            <label for="password">@Messages.get("password"):</label>
                             <input name="password" id="password" type="password" required="required"/>
-                            <input name="login" id="loginsubmit" class="greenlink formlink clickable" type="submit" value="Anmelden"/>
+                            <input name="login" id="loginsubmit" class="greenlink formlink clickable" type="submit" value="@Messages.get("login")"/>
                         </fieldset>
                             @if(errormsg!=null) {
                                 <p class="error" style="color:red">
@@ -46,9 +49,9 @@
                 </section>
                     <!-- Register section -->
                 <section id="registerforward" aria-labelledby="registerheading">
-                    <h2 id="registerheading" class="accessibility">Registrierung</h2>
-                    <p id="registerhint">Nicht registriert?</p>
-                    <a class="contentlink orangelink" title="Klicke hier um dich zu registrieren" href="register" accesskey="r">Zur Registrierung</a>
+                    <h2 id="registerheading" class="accessibility">@Messages.get("registration")</h2>
+                    <p id="registerhint">@Messages.get("notRegisteredQuestion")</p>
+                    <a class="contentlink orangelink" title="@Messages.get("clickToRegister")" href="register" accesskey="r">@Messages.get("toRegisteration")</a>
                 </section>
             </div>
 
