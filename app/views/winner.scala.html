@@ -32,8 +32,24 @@
         <div role="main">
             <section id="gameinfo" aria-labelledby="winnerinfoheading">
                 <h2 id="winnerinfoheading" class="accessibility">Gewinnerinformationen</h2>
-                <p class="user-info positive-change">Du hast richtig geantwortet: +1000 €</p>
-                <p class="user-info negative-change">Deadpool hat falsch geantwortet: -500 €</p>
+
+                @if(game.getHumanPlayer.getLatestProfitChange > 0) {
+                    @*<p class="user-info positive-change">Du hast richtig geantwortet: @if(game.getHumanPlayer().getLatestProfitChange() != null){} €</p>*@
+                    <p class="user-info positive-change">
+                        Du hast richtig geantwortet: @game.getHumanPlayer.getAnsweredQuestions.get(game.getHumanPlayer.getAnsweredQuestions.size()-1).getValue €</p>
+                }else{
+                    <p class="user-info negative-change">Du hast falsch geantwortet: - @game.getHumanPlayer.getAnsweredQuestions.get(game.getHumanPlayer.getAnsweredQuestions.size()-1).getValue €</p>
+                }
+                @if(game.getMarvinPlayer.getLatestProfitChange > 0){
+                    @*<p class="user-info negative-change">@game.getMarvin().getName() hat falsch geantwortet: @if(game.getMarvinPlayer().getLatestProfitChange() != null){+}else{-}@game.getMarvinPlayer().getLatestProfitChange() €</p>*@
+                    <p class="user-info positive-change">@game.getMarvin().getName() hat richtig geantwortet: @game.getMarvinPlayer().getAnsweredQuestions.get(game.getMarvinPlayer.getAnsweredQuestions.size()-1).getValue €</p>
+
+                }else{
+                    <p class="user-info negative-change">@game.getMarvin().getName() hat falsch geantwortet: -@game.getMarvinPlayer().getAnsweredQuestions.get(game.getMarvinPlayer.getAnsweredQuestions.size()-1).getValue €</p>
+                }
+
+                @*<p class="user-info positive-change">Du hast richtig geantwortet: +1000 €</p>*@
+                @*<p class="user-info negative-change">Deadpool hat falsch geantwortet: -500 €</p>*@
                 <section class="playerinfo leader" aria-labelledby="winnerannouncement">
                     <h3 id="winnerannouncement">Gewinner:  @game.getWinner().getUser.getName()</h3>
                     <img class="avatar" src="@routes.Assets.at("images/avatar/")@game.getWinner().getUser().getAvatar().getImageHead()" alt="Spieler-Avatar @game.getWinner().getUser.getName()" />
