@@ -2,7 +2,7 @@ package controllers;
 
 import at.ac.tuwien.big.we15.lab2.api.*;
 import at.ac.tuwien.big.we15.lab2.api.impl.PlayJeopardyFactory;
-import play.Logger;
+
 import play.cache.Cache;
 import play.data.DynamicForm;
 import play.data.Form;
@@ -118,14 +118,12 @@ public class Jeopardy extends Controller{
 
         Benutzer benutzer = getCachedBenutzer();
         if(benutzer == null){
-            Logger.debug("problem! user not set in cache");
             return null;
         }
 
         JeopardyGame game = createNewGame(benutzer);
 
         if(game == null) {
-            Logger.debug("problem! game=null");
             return null;
         }
 

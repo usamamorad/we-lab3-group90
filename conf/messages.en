@@ -1,0 +1,4 @@
+authUnsuccessful=authentication unsuccessful!
+emptyFieldError=Fields cannot be empty!
+badInput=Bad Input!
+userExistError=User already exists!

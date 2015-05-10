@@ -5,7 +5,7 @@ import play.data.validation.Constraints;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import play.data.validation.Constraints.*;
+
 import java.time.LocalDate;
 
 @Entity
@@ -104,19 +104,6 @@ public class Benutzer implements at.ac.tuwien.big.we15.lab2.api.User{
 
     public void setAvatarId(String avatarId) {
         this.avatarId = avatarId;
-    }
-
-    @Override
-    public String toString() {
-        return "Benutzer{" +
-                "name='" + name + '\'' +
-                ", password='" + password + '\'' +
-                ", avatarId='" + avatarId + '\'' +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", birthday=" + birthday +
-                ", gender='" + gender + '\'' +
-                '}';
     }
 
     @Override

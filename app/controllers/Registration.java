@@ -5,6 +5,7 @@ import play.data.DynamicForm;
 import play.data.Form;
 import play.db.jpa.JPA;
 import play.db.jpa.Transactional;
+import play.i18n.Messages;
 import play.mvc.Controller;
 import play.mvc.Result;
 import views.html.authentication;
@@ -29,7 +30,7 @@ public class Registration extends Controller {
         Benutzer benutzer = new Benutzer();
 
         if(form.hasErrors()){
-            return badRequest(registration.render("Schlechtes Input!"));
+            return badRequest(registration.render(Messages.get("badInput")));
         }
         else {
             benutzer.setFirstName(form.data().get("firstname"));
@@ -48,8 +49,7 @@ public class Registration extends Controller {
                 benutzer.setName(form.data().get("username"));
             }
             else{
-                System.out.println("registration failed - username has already been used!");
-                return badRequest(registration.render("Benutzername ist schon vorhanden!"));
+                return badRequest(registration.render(Messages.get("userExistError")));
             }
             benutzer.setPassword(form.data().get("password"));
 

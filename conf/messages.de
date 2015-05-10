@@ -1,0 +1,4 @@
+authUnsuccessful=Authentifizierung fehlgeschlagen!
+emptyFieldError=Felder dürfen nicht leer sein!
+badInput=Fehlerhafte Eingabedaten!
+userExistError=Benutzername ist schon vorhanden!

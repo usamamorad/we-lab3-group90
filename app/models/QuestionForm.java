@@ -15,10 +15,4 @@ public class QuestionForm {
         this.answers = answers;
     }
 
-    @Override
-    public String toString() {
-        return "QuestionForm{" +
-                "answers=" + answers +
-                '}';
-    }
 }

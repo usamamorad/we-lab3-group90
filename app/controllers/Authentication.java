@@ -4,6 +4,7 @@ import models.Benutzer;
 import play.cache.Cache;
 import play.data.DynamicForm;
 import play.data.Form;
+import play.i18n.Messages;
 import play.mvc.Controller;
 import play.mvc.Result;
 import views.html.authentication;
@@ -43,7 +44,6 @@ public class Authentication extends Controller {
 
         validateInput(loginForm,user,pass);
         if(loginForm.hasErrors()){
-            System.out.println("empty input");
             loginForm.reject(loginForm.globalError());
             return badRequest(authentication.render(null));
         }else {
@@ -51,13 +51,11 @@ public class Authentication extends Controller {
         boolean userOK = checkUser(user, pass);
         System.out.println(userOK);
         if (userOK) {
-            System.out.println("logged in as valid user!");
             return redirect(routes.Jeopardy.loadGame());
         }
         else {
-            System.out.println("login failed - user not ok");
-            loginForm.reject("authentication unsuccessful");
-            return badRequest(authentication.render("Authentication error!"));
+            loginForm.reject(Messages.get("authUnsuccessful"));
+            return badRequest(authentication.render(Messages.get("authUnsuccessful")));
         }
 
         }
@@ -100,7 +98,7 @@ public class Authentication extends Controller {
     private static void validateInput(Form form,String username, String password){
 
         if (username==null || password==null){
-            form.reject("Fields cannot be empty");
+            form.reject(Messages.get("emptyFieldError"));
         }
     }
 
